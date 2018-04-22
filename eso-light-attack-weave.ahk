@@ -15,31 +15,36 @@ Tab::
 Return
 
 1::
-	MouseClick, Left
+	if (!GetKeyState("LButton"))
+		MouseClick, Left
 	Sleep msDelay
 	Send, {NumPad1}
 Return
 
 2::
-	MouseClick, Left
+	if (!GetKeyState("LButton"))
+		MouseClick, Left
 	Sleep msDelay
 	Send, {NumPad2}
 Return
 
 3::
-	MouseClick, Left
+	if (!GetKeyState("LButton"))
+		MouseClick, Left
 	Sleep msDelay
 	Send, {NumPad3}
 Return
 
 4::
-	MouseClick, Left
+	if (!GetKeyState("LButton"))
+		MouseClick, Left
 	Sleep msDelay
 	Send, {NumPad4}
 Return
 
 ;5::
-;	MouseClick, Left
+;	if (!GetKeyState("LButton"))
+;		MouseClick, Left
 ;	Sleep msDelay
 ;	Send, {NumPad5}
 ;Return
