@@ -6,7 +6,9 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 Suspend
 
-global msDelay := 10
+;WARNING: If you change this value to anything other than 0, it would be considered botting.
+;Change at your own risk.
+global msDelay := 0
 
 #ifWinActive Elder Scrolls Online
 
