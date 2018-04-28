@@ -1,5 +1,6 @@
 ﻿;This script adds a simple mouse click to each of the enabled keys.
 
+#SingleInstance, force
 #NoEnv
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input
