@@ -51,55 +51,55 @@ Return
 
 ;Control + tab.
 ^Tab::
-    enableFive := !enableFive
+	enableFive := !enableFive
 return
 
 s1:
 	if (!GetKeyState(attack) && !GetKeyState(block)) {
 		Send, {%attack%}
-        Sleep msDelay
-    }
+		Sleep msDelay
+	}
 	Send, {NumPad1}
 Return
 
 s2:
 	if (!GetKeyState(attack) && !GetKeyState(block)) {
 		Send, {%attack%}
-        Sleep msDelay
-    }
+		Sleep msDelay
+	}
 	Send, {NumPad2}
 Return
 
 s3:
 	if (!GetKeyState(attack) && !GetKeyState(block)) {
 		Send, {%attack%}
-        Sleep msDelay
-    }
+		Sleep msDelay
+	}
 	Send, {NumPad3}
 Return
 
 s4:
 	if (!GetKeyState(attack) && !GetKeyState(block)) {
-        Send, {%attack%}
-        Sleep msDelay
-    }
+		Send, {%attack%}
+		Sleep msDelay
+	}
 	Send, {NumPad4}
 Return
 
 s5:
-    if (enableFive) {
-        if (!GetKeyState(attack) && !GetKeyState(block)) {
-            Send, {%attack%}
-            Sleep msDelay
-        }
-    }
-    Send, {NumPad5}
+	if (enableFive) {
+		if (!GetKeyState(attack) && !GetKeyState(block)) {
+			Send, {%attack%}
+			Sleep msDelay
+		}
+	}
+	Send, {NumPad5}
 Return
 
 su:
 	if (!GetKeyState(%attack%) && !GetKeyState(%block%)) {
 		Send, {%attack%}
-        Sleep msDelay
-    }
+		Sleep msDelay
+	}
 	Send, {NumPad9}
 Return
