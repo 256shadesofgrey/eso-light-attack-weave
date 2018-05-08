@@ -28,7 +28,8 @@ global skillUltimate := "r"
 ;Change this to true if you want skillFive to be activated when running the script.
 global enableFive := false
 
-;WARNING: If you change this value to anything other than 0, it could be considered botting.
+;WARNING: If you change this value to anything other than 0,
+;this macro will be more likely to be considered botting.
 ;Change at your own risk.
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
 global msDelay := 0
