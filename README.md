@@ -16,7 +16,7 @@ Q: Will this macro give me an advantage over other players?
 A: No. You don't need a macro to do light attack weaving. In fact, if you do it manually, you can probably find a way to do it more efficiently (I'm not an expert, don't quote me on it). It would only give you an advantage over players who don't know how light attack weaving works, but if you're here chances are you already do.
 
 Q: Why is 5 disabled by default?  
-A: This is where I recommend to put skills you might not want to trigger light attacks, for example things you might want to cast while in stealth or in a place where you want to avoid getting into combat, like a crowded town. You can always change this behavior, if you want it to be active as soon as you run the macro (read the comments inside the macro for more info).
+A: This is where I recommend to put skills you might not want to trigger light attacks, for example things you might want to cast while in stealth or in a place where you want to avoid getting into combat, like a crowded town. You can always change this behavior, if you want it to be active as soon as you enable the macro (read the comments inside the macro for more info).
 
 Q: Why is the ultimate key NumPad 9 and not 6? Do you count 1, 2, 3, 4, 5, 9?  
 A: Because I made it that way. Luckily this is open source and you can change it if OCD is plaguing you. :-)
