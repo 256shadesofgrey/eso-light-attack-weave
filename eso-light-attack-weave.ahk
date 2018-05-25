@@ -28,6 +28,9 @@ global skillUltimate := "r"
 ;Change this to true if you want skillFive to be activated when running the script.
 global enableFive := false
 
+;If you don't want to weave when using ultimate, set this to false.
+global enableUlti := true
+
 ;WARNING: If you change this value to anything other than 0,
 ;this macro will be more likely to be considered botting.
 ;Change at your own risk.
@@ -98,9 +101,11 @@ s5:
 Return
 
 su:
-	if (!GetKeyState(%attack%) && !GetKeyState(%block%)) {
-		Send, {%attack%}
-		Sleep msDelay
-	}
-	Send, {NumPad9}
+	if (enableUlti) {
+        if (!GetKeyState(%attack%) && !GetKeyState(%block%)) {
+            Send, {%attack%}
+            Sleep msDelay
+        }
+        Send, {NumPad9}
+    }
 Return
