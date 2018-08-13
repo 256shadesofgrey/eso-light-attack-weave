@@ -50,62 +50,62 @@ Hotkey, %skillUltimate%, su, On
 #ifWinActive Elder Scrolls Online
 
 Tab::
-	Suspend
+    Suspend
 Return
 
 ;Control + tab.
 ^Tab::
-	enableFive := !enableFive
+    enableFive := !enableFive
 return
 
 s1:
-	if (!GetKeyState(attack) && !GetKeyState(block)) {
-		Send, {%attack%}
-		Sleep msDelay
-	}
-	Send, {NumPad1}
+    if (!GetKeyState(attack) && !GetKeyState(block)) {
+        Send, {%attack%}
+        Sleep msDelay
+    }
+    Send, {NumPad1}
 Return
 
 s2:
-	if (!GetKeyState(attack) && !GetKeyState(block)) {
-		Send, {%attack%}
-		Sleep msDelay
-	}
-	Send, {NumPad2}
+    if (!GetKeyState(attack) && !GetKeyState(block)) {
+        Send, {%attack%}
+        Sleep msDelay
+    }
+    Send, {NumPad2}
 Return
 
 s3:
-	if (!GetKeyState(attack) && !GetKeyState(block)) {
-		Send, {%attack%}
-		Sleep msDelay
-	}
-	Send, {NumPad3}
+    if (!GetKeyState(attack) && !GetKeyState(block)) {
+        Send, {%attack%}
+        Sleep msDelay
+    }
+    Send, {NumPad3}
 Return
 
 s4:
-	if (!GetKeyState(attack) && !GetKeyState(block)) {
-		Send, {%attack%}
-		Sleep msDelay
-	}
-	Send, {NumPad4}
+    if (!GetKeyState(attack) && !GetKeyState(block)) {
+        Send, {%attack%}
+        Sleep msDelay
+    }
+    Send, {NumPad4}
 Return
 
 s5:
-	if (enableFive) {
-		if (!GetKeyState(attack) && !GetKeyState(block)) {
-			Send, {%attack%}
-			Sleep msDelay
-		}
-	}
-	Send, {NumPad5}
+    if (enableFive) {
+        if (!GetKeyState(attack) && !GetKeyState(block)) {
+            Send, {%attack%}
+            Sleep msDelay
+        }
+    }
+    Send, {NumPad5}
 Return
 
 su:
-	if (enableUlti) {
+    if (enableUlti) {
         if (!GetKeyState(%attack%) && !GetKeyState(%block%)) {
             Send, {%attack%}
             Sleep msDelay
         }
-        Send, {NumPad9}
     }
+    Send, {NumPad9}
 Return
