@@ -58,54 +58,38 @@ Return
     enableFive := !enableFive
 return
 
-s1:
-    if (!GetKeyState(attack) && !GetKeyState(block)) {
-        Send, {%attack%}
-        Sleep msDelay
-    }
-    Send, {NumPad1}
-Return
-
-s2:
-    if (!GetKeyState(attack) && !GetKeyState(block)) {
-        Send, {%attack%}
-        Sleep msDelay
-    }
-    Send, {NumPad2}
-Return
-
-s3:
-    if (!GetKeyState(attack) && !GetKeyState(block)) {
-        Send, {%attack%}
-        Sleep msDelay
-    }
-    Send, {NumPad3}
-Return
-
-s4:
-    if (!GetKeyState(attack) && !GetKeyState(block)) {
-        Send, {%attack%}
-        Sleep msDelay
-    }
-    Send, {NumPad4}
-Return
-
-s5:
-    if (enableFive) {
+;key - the key to activate after weaving. enabled - whether weaving is enabled.
+Weave(key, enabled)
+{
+    if (enabled) {
         if (!GetKeyState(attack) && !GetKeyState(block)) {
             Send, {%attack%}
             Sleep msDelay
         }
     }
-    Send, {NumPad5}
+    Send, {%key%}
+}
+
+s1:
+    Weave("NumPad1", true)
+Return
+
+s2:
+    Weave("NumPad2", true)
+Return
+
+s3:
+    Weave("NumPad3", true)
+Return
+
+s4:
+    Weave("NumPad4", true)
+Return
+
+s5:
+    Weave("NumPad5", enableFive)
 Return
 
 su:
-    if (enableUlti) {
-        if (!GetKeyState(%attack%) && !GetKeyState(%block%)) {
-            Send, {%attack%}
-            Sleep msDelay
-        }
-    }
-    Send, {NumPad9}
+    Weave("NumPad9", enableUlti)
 Return
