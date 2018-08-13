@@ -35,7 +35,10 @@ global enableUlti := true
 ;this macro will be more likely to be considered botting.
 ;Change at your own risk.
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
-global msDelay := 0
+global msDelay := 100
+
+global msBlockDelay := 700
+global msBlockHold := 100
 
 ;========== END OF CONFIGURATION ==========
 
@@ -68,6 +71,10 @@ Weave(key, enabled)
         }
     }
     Send, {%key%}
+    Sleep msBlockDelay
+    Send, {%block% down}
+    Sleep msBlockHold
+    Send, {%block% up}
 }
 
 s1:
