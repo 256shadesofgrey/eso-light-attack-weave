@@ -15,7 +15,6 @@ SetWorkingDir %A_ScriptDir%
 Suspend
 
 ;Key configuration. Change this if your keybinds differ from the default ones.
-;Note: you can't select numpad keys 1-5 and 9.
 global attack := "LButton"
 global block := "RButton"
 global skillOne := "1"
@@ -29,7 +28,7 @@ global skillUltimate := "r"
 global enableFive := false
 
 ;If you don't want to weave when using ultimate, set this to false.
-global enableUlti := true
+global enableUlti := false
 
 ;Enable or disable block cancelling on the given skills.
 ;WARNING: If you enable any of these functions, this macro is more likely to be considered botting.
@@ -76,6 +75,7 @@ Return
 return
 
 ;key - the key to activate after weaving. enabled - whether weaving is enabled.
+;blockCancel - whether the animation will be block cancelled.
 Weave(key, enabled, blockCancel)
 {
     if (enabled) {
@@ -96,25 +96,25 @@ Weave(key, enabled, blockCancel)
 }
 
 s1:
-    Weave("NumPad1", true, enableBlockCancel1)
+    Weave(skillOne, true, enableBlockCancel1)
 Return
 
 s2:
-    Weave("NumPad2", true, enableBlockCancel2)
+    Weave(skillTwo, true, enableBlockCancel2)
 Return
 
 s3:
-    Weave("NumPad3", true, enableBlockCancel3)
+    Weave(skillThree, true, enableBlockCancel3)
 Return
 
 s4:
-    Weave("NumPad4", true, enableBlockCancel4)
+    Weave(skillFour, true, enableBlockCancel4)
 Return
 
 s5:
-    Weave("NumPad5", enableFive, enableBlockCancel5)
+    Weave(skillFive, enableFive, enableBlockCancel5)
 Return
 
 su:
-    Weave("NumPad9", enableUlti, enableBlockCancelU)
+    Weave(skillUltimate, enableUlti, enableBlockCancelU)
 Return
