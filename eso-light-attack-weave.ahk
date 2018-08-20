@@ -31,14 +31,28 @@ global enableFive := false
 ;If you don't want to weave when using ultimate, set this to false.
 global enableUlti := true
 
+;Enable or disable block cancelling on the given skills.
+;WARNING: If you enable any of these functions, this macro is more likely to be considered botting.
+global enableBlockCancel1 := false
+global enableBlockCancel2 := false
+global enableBlockCancel3 := false
+global enableBlockCancel4 := false
+global enableBlockCancel5 := false
+global enableBlockCancelU := false
+
 ;WARNING: If you change this value to anything other than 0,
 ;this macro will be more likely to be considered botting.
 ;Change at your own risk.
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
-global msDelay := 100
+global msDelay := 0
 
-global msBlockDelay := 700
-global msBlockHold := 100
+;These values are inactive unless you enabled block cancelling.
+;The default values were successfully tested with Endless Hail (Bow skill) at low latency.
+;You might want to adjust them depending on what skills you will be cancelling and your internet connection.
+;This is used to determine, how long after a skill is used the macro should attempt blocking.
+global msBlockDelay := 500
+;This is used to determine, how long to hold block once it's triggered.
+global msBlockHold := 50
 
 ;========== END OF CONFIGURATION ==========
 
@@ -62,7 +76,7 @@ Return
 return
 
 ;key - the key to activate after weaving. enabled - whether weaving is enabled.
-Weave(key, enabled)
+Weave(key, enabled, blockCancel)
 {
     if (enabled) {
         if (!GetKeyState(attack) && !GetKeyState(block)) {
@@ -71,32 +85,36 @@ Weave(key, enabled)
         }
     }
     Send, {%key%}
-    Sleep msBlockDelay
-    Send, {%block% down}
-    Sleep msBlockHold
-    Send, {%block% up}
+    if (enabled && blockCancel && !GetKeyState(attack) && !GetKeyState(block)) {
+        Sleep msBlockDelay
+        if (!GetKeyState(attack) && !GetKeyState(block)) {
+            Send, {%block% down}
+            Sleep msBlockHold
+            Send, {%block% up}
+        }
+    }
 }
 
 s1:
-    Weave("NumPad1", true)
+    Weave("NumPad1", true, enableBlockCancel1)
 Return
 
 s2:
-    Weave("NumPad2", true)
+    Weave("NumPad2", true, enableBlockCancel2)
 Return
 
 s3:
-    Weave("NumPad3", true)
+    Weave("NumPad3", true, enableBlockCancel3)
 Return
 
 s4:
-    Weave("NumPad4", true)
+    Weave("NumPad4", true, enableBlockCancel4)
 Return
 
 s5:
-    Weave("NumPad5", enableFive)
+    Weave("NumPad5", enableFive, enableBlockCancel5)
 Return
 
 su:
-    Weave("NumPad9", enableUlti)
+    Weave("NumPad9", enableUlti, enableBlockCancelU)
 Return
