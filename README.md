@@ -18,15 +18,15 @@ A: This is where I recommend to put skills you might not want to trigger light a
 Q: Will this macro give me an advantage over other players?  
 A: Not really. You don't need a macro to do light attack weaving. In fact, if you do it manually, you can probably find a way to do it more efficiently. It would only give you an advantage over players who don't know how light attack weaving works, but if you're here, chances are you already do.
 
-Q: Are there future plans for the macro?
+Q: Are there future plans for the macro?  
 A: I intend to do away with AutoHotkey and rewrite the macro in a different language (probably Python) to make it work on Mac and Linux too. However when and if that happens will depend on not just me but also on whether ESO will ever run out of the box on Linux. Until then I might make occasional updates just like before.
 
 ## Philosophical questions
-Q: If this macro doesn't give an advantage, why was it made?
+Q: If this macro doesn't give an advantage, why was it made?  
 A: I don't like how animation cancelling is implemented in ESO, and this macro basically allows you to experience combat the way it would work if I was put in charge of overhauling the combat system. With the macro you can pretend like light attack weaving didn't exist.
 
-Q: What's wrong with animation cancelling?
+Q: What's wrong with animation cancelling?  
 A: There is nothing inherently wrong with it. In my opinion some forms of animation cancelling are necessary to make the game feel responsive, but no form of animation cancelling should result in just flat out more damage. Light attack weaving is the biggest offender, since it's currently easily making up 25% of the damage on certain builds.
 
-Q: What forms of animation cancelling are in your opinion necessary?
+Q: What forms of animation cancelling are in your opinion necessary?  
 A: For example dodge rolling. If a skill with a long animation locked you in place and you couldn't dodge roll, it would often lead to the death of your character. When you dodge roll, you cancel the skill animation, but that doesn't allow you to perform any additional action that would increase your damage, because while you're rolling, you can't do any attacks.
