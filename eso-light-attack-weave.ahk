@@ -1,4 +1,4 @@
-﻿;This script adds a simple mouse click to each of the enabled keys.
+﻿;This script adds a simple mouse click to each of the enabled keys and optionally a delayed right click.
 
 ;>>>>>Do not change this unless you know what you are doing.
 #SingleInstance, force
@@ -45,12 +45,13 @@ global enableBlockCancelU := false
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
 global msDelay := 0
 
-;These values are inactive unless you enabled block cancelling.
+;The following parameters are inactive unless you enabled block cancelling.
 ;The default values were successfully tested with Endless Hail (Bow skill) at low latency.
 ;You might want to adjust them depending on what skills you will be cancelling and your internet connection.
-;This is used to determine, how long after a skill is used the macro should attempt blocking.
+
+;This is used to determine how long to wait, after a skill was used, before blocking.
 global msBlockDelay := 500
-;This is used to determine, how long to hold block once it's triggered.
+;This is used to determine how long to hold block once it's triggered.
 global msBlockHold := 50
 
 ;========== END OF CONFIGURATION ==========
@@ -74,7 +75,8 @@ Return
     enableFive := !enableFive
 return
 
-;key - the key to activate after weaving. enabled - whether weaving is enabled.
+;key - the key to activate after weaving. 
+;enabled - whether weaving is enabled.
 ;blockCancel - whether the animation will be block cancelled.
 Weave(key, enabled, blockCancel)
 {
