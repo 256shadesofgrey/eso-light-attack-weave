@@ -39,6 +39,14 @@ global enableBlockCancel4 := false
 global enableBlockCancel5 := false
 global enableBlockCancelU := false
 
+;Change this to false if you want to disable weaving on individual keys, but allow block cancelling to continue.
+global enableWeave1 := true
+global enableWeave2 := true
+global enableWeave3 := true
+global enableWeave4 := true
+global enableWeave5 := true
+global enableWeaveU := true
+
 ;WARNING: If you change this value to anything other than 0,
 ;this macro will be more likely to be considered botting.
 ;Change at your own risk.
@@ -78,9 +86,9 @@ return
 ;key - the key to activate after weaving. 
 ;enabled - whether weaving is enabled.
 ;blockCancel - whether the animation will be block cancelled.
-Weave(key, enabled, blockCancel)
+Weave(key, enabled, blockCancel, weave)
 {
-    if (enabled) {
+    if (enabled && weave) {
         if (!GetKeyState(attack) && !GetKeyState(block)) {
             Send, {%attack%}
             Sleep msDelay
@@ -98,25 +106,25 @@ Weave(key, enabled, blockCancel)
 }
 
 s1:
-    Weave(skillOne, true, enableBlockCancel1)
+    Weave(skillOne, true, enableBlockCancel1, enableWeave1)
 Return
 
 s2:
-    Weave(skillTwo, true, enableBlockCancel2)
+    Weave(skillTwo, true, enableBlockCancel2, enableWeave2)
 Return
 
 s3:
-    Weave(skillThree, true, enableBlockCancel3)
+    Weave(skillThree, true, enableBlockCancel3, enableWeave3)
 Return
 
 s4:
-    Weave(skillFour, true, enableBlockCancel4)
+    Weave(skillFour, true, enableBlockCancel4, enableWeave4)
 Return
 
 s5:
-    Weave(skillFive, enableFive, enableBlockCancel5)
+    Weave(skillFive, enableFive, enableBlockCancel5, enableWeave5)
 Return
 
 su:
-    Weave(skillUltimate, enableUlti, enableBlockCancelU)
+    Weave(skillUltimate, enableUlti, enableBlockCancelU, enableWeaveU)
 Return
