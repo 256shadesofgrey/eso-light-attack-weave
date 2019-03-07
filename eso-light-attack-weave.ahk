@@ -51,7 +51,7 @@ global enableWeaveU := true
 ;this macro will be more likely to be considered botting.
 ;Change at your own risk.
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
-global msDelay := 0
+global msDelay := 100
 
 ;The following parameters are inactive unless you enabled block cancelling.
 ;The default values were successfully tested with Endless Hail (Bow skill) at low latency.
@@ -61,10 +61,14 @@ global msDelay := 0
 global msBlockDelay := 500
 ;This is used to determine how long to hold block once it's triggered.
 global msBlockHold := 50
+;Global cooldown on skills. Time for which the script will ignore new inputs. This is typically 900 ms. To disable this feature set this to 0.
+global msGlobalCooldown := 900
 
 ;========== END OF CONFIGURATION ==========
 
 ;Do not change anything starting here, unless you know what you are doing.
+global lastSkillActivation := -msGlobalCooldown
+
 Hotkey, %skillOne%, s1, On
 Hotkey, %skillTwo%, s2, On
 Hotkey, %skillThree%, s3, On
@@ -88,6 +92,9 @@ return
 ;blockCancel - whether the animation will be block cancelled.
 Weave(key, enabled, blockCancel, weave)
 {
+    if (lastSkillActivation+msGlobalCooldown > A_TickCount) {
+        return
+    }
     if (enabled && weave) {
         if (!GetKeyState(attack) && !GetKeyState(block)) {
             Send, {%attack%}
@@ -95,6 +102,7 @@ Weave(key, enabled, blockCancel, weave)
         }
     }
     Send, {%key%}
+    lastSkillActivation := A_TickCount
     if (enabled && blockCancel && !GetKeyState(attack) && !GetKeyState(block)) {
         Sleep msBlockDelay
         if (!GetKeyState(attack) && !GetKeyState(block)) {
