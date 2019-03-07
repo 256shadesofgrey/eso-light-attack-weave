@@ -63,8 +63,8 @@ global msBlockDelay := 500
 ;This is used to determine how long to hold block once it's triggered.
 global msBlockHold := 50
 ;Global cooldown on skills. Time for which the script will ignore new inputs. 
-;This is typically 900 ms. To disable this feature set this to 0.
-global msGlobalCooldown := 900
+;This is typically 1000 ms. To disable this feature set this to 0.
+global msGlobalCooldown := 1000
 
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
@@ -72,29 +72,12 @@ global msGlobalCooldown := 900
 ;Any number greater than that will cause the inputs to be saved and used automatically 
 ;when the GCD is over. 
 ;If the queue is full, new presses will override the last performed input.
-global queueLength := 2
+global queueLength := 1
 
 ;========== END OF CONFIGURATION ==========
 
 ;Do not change anything starting here, unless you know what you are doing.
 global lastSkillActivation := -msGlobalCooldown
-class Action
-{
-    key := ""
-    enabled := false
-    blockCancel := false
-    weave := false
-    
-    __New(key, enabled, blockCancel, weave)
-    {
-        this.key := key
-        this.enabled := enabled
-        this.blockCancel := blockCancel
-        this.weave := weave
-        
-        return this
-    }
-}
 
 global Queue := Object()
 
@@ -121,30 +104,41 @@ Schedule(key, enabled, blockCancel, weave)
     remainingGCD := lastSkillActivation + msGlobalCooldown - A_TickCount
     
     if (remainingGCD > 0) {
+        ;The time has to be given as a negative number for a single execution by SetTimer.
+        remainingGCD := remainingGCD < 0 ? 0 : -remainingGCD
+        
+        ;Make sure we don't exceed max. queue size.
         qSize := Queue.MaxIndex() ? Queue.MaxIndex() : 0
+        
+        ;Make sure the new action is performed after all the previous ones.
+        remainingGCD -= (msGlobalCooldown * qSize)
+            
         if (qSize < queueLength) {
-            Queue.Insert(new Action(key, enabled, blockCancel, weave))
+            W := Func("ScheduledWeave").Bind(key, enabled, blockCancel, weave)
+            Queue.Insert(W)
+            SetTimer, % W, %remainingGCD%
         } else {
-            Queue.Remove()
-            Queue.Insert(new Action(key, enabled, blockCancel, weave))
+            W := Queue.Remove()
+            SetTimer, % W, Delete
+            W := Func("ScheduledWeave").Bind(key, enabled, blockCancel, weave)
+            Queue.Insert(W)
+            remainingGCD += msGlobalCooldown
+            if (remainingGCD > 0) {
+                remainingGCD = -1
+            }
+            SetTimer, % W, %remainingGCD%
         }
-        
-        k := Queue[1].key
-        e := Queue[1].enabled
-        b := Queue[1].blockCancel
-        w := Queue[1].weave
-        Queue.Remove(1)
-        
-        W := Func("Weave").Bind(k, e, b, w)
-        
-        remainingGCD := -remainingGCD
-        
-        SetTimer, % W, %remainingGCD%
         
         return
     }
     
     Weave(key, enabled, blockCancel, weave)
+}
+
+ScheduledWeave(key, enabled, blockCancel, weave)
+{
+    Weave(key, enabled, blockCancel, weave)
+    Queue.Remove(1)
 }
 
 ;key - the key to activate after weaving. 
@@ -159,6 +153,8 @@ Weave(key, enabled, blockCancel, weave)
         }
     }
     Send, {%key%}
+    dm := A_TickCount-lastSkillActivation
+    OutputDebug, %dm%
     lastSkillActivation := A_TickCount
     if (enabled && blockCancel && !GetKeyState(attack) && !GetKeyState(block)) {
         Sleep msBlockDelay
