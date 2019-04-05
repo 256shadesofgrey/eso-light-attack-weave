@@ -65,6 +65,8 @@ global msDelay := 100
 ;msGlobalCooldown + msDelay must be >= 1000 ms.
 global msGlobalCooldown := 900
 
+global msFullCycle := msDelay + msGlobalCooldown
+
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
 ;If this is set to 0, you have to time the key presses manually to make sure light attacks go off. 
@@ -120,22 +122,20 @@ Loop()
         return
     }
     
-    nextLoopIteration := 0
+    lastLoopIteration := A_TickCount
+    timerDelay := 10
     
     if (queue.MaxIndex() >= 1) {
-        if (lastSkillActivation + msGlobalCooldown > A_TickCount) {
-            nextLoopIteration := lastSkillActivation + msGlobalCooldown
+        if (lastSkillActivation + msGlobalCooldown > lastLoopIteration) {
+            timerDelay := lastSkillActivation + msGlobalCooldown - lastLoopIteration
         } else {
             W := queue.Remove(1)
             %W%()
         }
     } else {
-        nextLoopIteration := A_TickCount + msGlobalCooldown
+        timerDelay := msGlobalCooldown
     }
     
-    lastLoopIteration := A_TickCount
-    
-    timerDelay := nextLoopIteration - A_TickCount
     ;Make sure the timerDelay value is always negative
     timerDelay := timerDelay >= 10 ? -timerDelay : -10
     
