@@ -31,7 +31,8 @@ global skillUltimate := "r"
 ;and adjusting the game configuration accordingly.
 ;For example if you switch to German layout, "`" turns into "ö" in game settings, 
 ;which is on a different key.
-global barSwap := "``"
+;global barSwap := "``"
+global barSwap := "b"
 
 ;Change this to false if you don't want skillFive to be activated when running the script.
 global enableFive := true
@@ -136,7 +137,7 @@ Loop()
     
     timerDelay := nextLoopIteration - A_TickCount
     ;Make sure the timerDelay value is always negative
-    timerDelay := timerDelay > 0 ? -timerDelay : -10
+    timerDelay := timerDelay >= 10 ? -timerDelay : -10
     
     ;timerDelay has to be negative to be executed once. Positive values make it periodic.
     SetTimer, Loop, %timerDelay%
@@ -167,9 +168,7 @@ Schedule(key, enabled, blockCancel, weave)
 ClearQueue()
 {
     ql := queue.MaxIndex()
-    OutputDebug, Queue length: %ql%
     while (queue.MaxIndex() >= 1) {
-        OutputDebug, Removing object from queue.
         queue.Remove()
     }
 }
@@ -186,8 +185,10 @@ Weave(key, enabled, blockCancel, weave)
         }
     }
     Send, {%key%}
-    ;dm := A_TickCount-lastSkillActivation
-    ;OutputDebug, %dm%
+    
+    dm := A_TickCount-lastSkillActivation
+    OutputDebug, Time since last skill: %dm%
+    
     lastSkillActivation := A_TickCount
     if (enabled && blockCancel && !GetKeyState(attack) && !GetKeyState(block)) {
         Sleep msBlockDelay
