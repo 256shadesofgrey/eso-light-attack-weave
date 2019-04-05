@@ -1,4 +1,6 @@
-﻿;This script adds a simple mouse click to each of the enabled keys and optionally a delayed right click.
+﻿;TODO: bar swap should either cancel queue or also be queued up. Light attacks don't go off if skill is used quickly after bar swap from hail. Remove debug output.
+
+;This script adds a simple mouse click to each of the enabled keys and optionally a delayed right click.
 
 ;========== Do not change this section unless you know what you are doing. ==========
 #SingleInstance, force
@@ -48,10 +50,8 @@ global enableWeave4 := true
 global enableWeave5 := true
 global enableWeaveU := true
 
-;WARNING: If you change this value to anything other than 0,
-;this macro will be more likely to be considered botting.
-;Change at your own risk.
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
+;Keep this as low as you can.
 global msDelay := 100
 
 ;The following parameters are inactive unless you enabled block cancelling.
@@ -63,8 +63,8 @@ global msBlockDelay := 500
 ;This is used to determine how long to hold block once it's triggered.
 global msBlockHold := 50
 ;Global cooldown on skills. Time for which the script will ignore new inputs. 
-;This is typically 1000 ms. To disable this feature set this to 0.
-global msGlobalCooldown := 1000
+;msGlobalCooldown + msDelay must be >= 1000. To disable this feature set this to 0.
+global msGlobalCooldown := 900
 
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
@@ -72,14 +72,15 @@ global msGlobalCooldown := 1000
 ;Any number greater than that will cause the inputs to be saved and used automatically 
 ;when the GCD is over. 
 ;If the queue is full, new presses will override the last performed input.
-global queueLength := 1
+global queueLength := 3
 
 ;========== END OF CONFIGURATION ==========
 
 ;Do not change anything starting here, unless you know what you are doing.
 global lastSkillActivation := -msGlobalCooldown
+global lastLoopIteration := -msGlobalCooldown
 
-global Queue := Object()
+global queue := Object()
 
 Hotkey, %skillOne%, s1, On
 Hotkey, %skillTwo%, s2, On
@@ -92,6 +93,7 @@ Hotkey, %skillUltimate%, su, On
 
 Tab::
     Suspend
+    Loop()
 Return
 
 ;Control + tab.
@@ -99,46 +101,66 @@ Return
     enableFive := !enableFive
 return
 
+Loop()
+{
+    ;If script is suspended, reset queue and stop execution.
+    if (A_IsSuspended) {
+        ClearQueue()
+        return
+    }
+    
+    nextLoopIteration := 0
+    
+    if (queue.MaxIndex() >= 1) {
+        if (lastSkillActivation + msGlobalCooldown > A_TickCount) {
+            nextLoopIteration := lastSkillActivation + msGlobalCooldown
+        } else {
+            W := queue.Remove(1)
+            %W%()
+        }
+    } else {
+        nextLoopIteration := A_TickCount + msGlobalCooldown
+    }
+    
+    lastLoopIteration := A_TickCount
+    
+    timerDelay := nextLoopIteration - A_TickCount
+    ;Make sure the timerDelay value is always negative
+    timerDelay := timerDelay > 0 ? -timerDelay : -10
+    
+    OutputDebug, %timerDelay%
+    
+    ;timerDelay has to be negative to be executed once. Positive values make it periodic.
+    SetTimer, Loop, %timerDelay%
+}
+
 Schedule(key, enabled, blockCancel, weave)
 {
     remainingGCD := lastSkillActivation + msGlobalCooldown - A_TickCount
     
-    if (remainingGCD > 0) {
-        ;The time has to be given as a negative number for a single execution by SetTimer.
-        remainingGCD := remainingGCD < 0 ? 0 : -remainingGCD
-        
+    ;If the GCD is not over yet, queue the new action.
+    if ((remainingGCD > 0 || queue.MaxIndex() >= 1) && msGlobalCooldown > 0) {
         ;Make sure we don't exceed max. queue size.
-        qSize := Queue.MaxIndex() ? Queue.MaxIndex() : 0
+        qSize := queue.MaxIndex() ? queue.MaxIndex() : 0
         
-        ;Make sure the new action is performed after all the previous ones.
-        remainingGCD -= (msGlobalCooldown * qSize)
-            
         if (qSize < queueLength) {
-            W := Func("ScheduledWeave").Bind(key, enabled, blockCancel, weave)
-            Queue.Insert(W)
-            SetTimer, % W, %remainingGCD%
-        } else {
-            W := Queue.Remove()
-            SetTimer, % W, Delete
-            W := Func("ScheduledWeave").Bind(key, enabled, blockCancel, weave)
-            Queue.Insert(W)
-            remainingGCD += msGlobalCooldown
-            if (remainingGCD > 0) {
-                remainingGCD = -1
-            }
-            SetTimer, % W, %remainingGCD%
+            W := Func("Weave").Bind(key, enabled, blockCancel, weave)
+            queue.Push(W)
+        } else { ;If queue size is exceeded, override the latest entry (default ESO behavior).
+            queue.Pop()
+            W := Func("Weave").Bind(key, enabled, blockCancel, weave)
+            queue.Push(W)
         }
-        
-        return
+    } else { ;If the GCD is over and the queue is empty, there is no reason to wait.
+        Weave(key, enabled, blockCancel, weave)
     }
-    
-    Weave(key, enabled, blockCancel, weave)
 }
 
-ScheduledWeave(key, enabled, blockCancel, weave)
+ClearQueue()
 {
-    Weave(key, enabled, blockCancel, weave)
-    Queue.Remove(1)
+    while (queue.MaxIndex >= 1) {
+        queue.Remove()
+    }
 }
 
 ;key - the key to activate after weaving. 
@@ -154,7 +176,7 @@ Weave(key, enabled, blockCancel, weave)
     }
     Send, {%key%}
     dm := A_TickCount-lastSkillActivation
-    OutputDebug, %dm%
+    ;OutputDebug, %dm%
     lastSkillActivation := A_TickCount
     if (enabled && blockCancel && !GetKeyState(attack) && !GetKeyState(block)) {
         Sleep msBlockDelay
