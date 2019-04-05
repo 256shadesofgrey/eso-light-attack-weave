@@ -25,9 +25,16 @@ global skillThree := "3"
 global skillFour := "4"
 global skillFive := "5"
 global skillUltimate := "r"
+;The default key here is "`" ("``" in the script due to technical reasons for special characters), 
+;which changes depending on keyboard layout. 
+;So if you use multiple layouts, I recommend changing it to something else, 
+;and adjusting the game configuration accordingly.
+;For example if you switch to German layout, "`" turns into "ö" in game settings, 
+;which is on a different key.
+global barSwap := "``"
 
-;Change this to true if you want skillFive to be activated when running the script.
-global enableFive := false
+;Change this to false if you don't want skillFive to be activated when running the script.
+global enableFive := true
 
 ;If you don't want to weave when using ultimate, set this to false.
 global enableUlti := false
@@ -54,6 +61,18 @@ global enableWeaveU := true
 ;Keep this as low as you can.
 global msDelay := 100
 
+;msGlobalCooldown + msDelay must be >= 1000 ms.
+global msGlobalCooldown := 900
+
+;This determines how many button presses will be executed later if the input comes before
+;the global cooldown (GCD) is over. 
+;If this is set to 0, you have to time the key presses manually to make sure light attacks go off. 
+;Any number greater than that will cause the inputs to be saved and used automatically 
+;when the GCD is over. 
+;If the queue is full, new presses will override the last performed input.
+;queueLength = 1 will result in skill behavior like in ESO by default, but with light attacks in between.
+global queueLength := 1
+
 ;The following parameters are inactive unless you enabled block cancelling.
 ;The default values were successfully tested with Endless Hail (Bow skill) at low latency.
 ;You might want to adjust them depending on what skills you will be cancelling and your internet connection.
@@ -63,16 +82,6 @@ global msBlockDelay := 500
 ;This is used to determine how long to hold block once it's triggered.
 global msBlockHold := 50
 ;Global cooldown on skills. Time for which the script will ignore new inputs. 
-;msGlobalCooldown + msDelay must be >= 1000. To disable this feature set this to 0.
-global msGlobalCooldown := 900
-
-;This determines how many button presses will be executed later if the input comes before
-;the global cooldown (GCD) is over. 
-;If this is set to 0, the GCD will cause inputs to be ignored for its duration. 
-;Any number greater than that will cause the inputs to be saved and used automatically 
-;when the GCD is over. 
-;If the queue is full, new presses will override the last performed input.
-global queueLength := 3
 
 ;========== END OF CONFIGURATION ==========
 
@@ -88,6 +97,7 @@ Hotkey, %skillThree%, s3, On
 Hotkey, %skillFour%, s4, On
 Hotkey, %skillFive%, s5, On
 Hotkey, %skillUltimate%, su, On
+Hotkey, %barSwap%, bs, On
 
 #ifWinActive Elder Scrolls Online
 
@@ -128,8 +138,6 @@ Loop()
     ;Make sure the timerDelay value is always negative
     timerDelay := timerDelay > 0 ? -timerDelay : -10
     
-    OutputDebug, %timerDelay%
-    
     ;timerDelay has to be negative to be executed once. Positive values make it periodic.
     SetTimer, Loop, %timerDelay%
 }
@@ -139,7 +147,7 @@ Schedule(key, enabled, blockCancel, weave)
     remainingGCD := lastSkillActivation + msGlobalCooldown - A_TickCount
     
     ;If the GCD is not over yet, queue the new action.
-    if ((remainingGCD > 0 || queue.MaxIndex() >= 1) && msGlobalCooldown > 0) {
+    if (queueLength > 0 && (remainingGCD > 0 || queue.MaxIndex() >= 1)) {
         ;Make sure we don't exceed max. queue size.
         qSize := queue.MaxIndex() ? queue.MaxIndex() : 0
         
@@ -158,7 +166,10 @@ Schedule(key, enabled, blockCancel, weave)
 
 ClearQueue()
 {
-    while (queue.MaxIndex >= 1) {
+    ql := queue.MaxIndex()
+    OutputDebug, Queue length: %ql%
+    while (queue.MaxIndex() >= 1) {
+        OutputDebug, Removing object from queue.
         queue.Remove()
     }
 }
@@ -175,7 +186,7 @@ Weave(key, enabled, blockCancel, weave)
         }
     }
     Send, {%key%}
-    dm := A_TickCount-lastSkillActivation
+    ;dm := A_TickCount-lastSkillActivation
     ;OutputDebug, %dm%
     lastSkillActivation := A_TickCount
     if (enabled && blockCancel && !GetKeyState(attack) && !GetKeyState(block)) {
@@ -210,4 +221,9 @@ Return
 
 su:
     Schedule(skillUltimate, enableUlti, enableBlockCancelU, enableWeaveU)
+Return
+
+bs:
+    ClearQueue()
+    Send, %barSwap%
 Return
