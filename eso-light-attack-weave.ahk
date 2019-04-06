@@ -59,13 +59,15 @@ global enableWeave5 := true
 global enableWeaveU := true
 
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
-;Keep this as low as you can.
-global msDelay := 100
+;Keep this as low as you can for the best result.
+global msDelay := 0
 
-;msGlobalCooldown + msDelay must be >= 1000 ms.
-global msGlobalCooldown := 900
+;msGlobalCooldown + msDelay must be >= 950 ms.
+global msGlobalCooldown := 965
 
-global msFullCycle := msDelay + msGlobalCooldown
+;Both skill and bar swap cooldowns have to be over before you can do a light attack.
+;Whichever ends later is considered.
+global msBarSwapCooldown := 700
 
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
@@ -91,6 +93,7 @@ global msBlockHold := 50
 ;Do not change anything starting here, unless you know what you are doing.
 global lastSkillActivation := -msGlobalCooldown
 global lastLoopIteration := -msGlobalCooldown
+global lastBarSwap := -msBarSwapCooldown
 
 global queue := Object()
 
@@ -126,8 +129,11 @@ Loop()
     timerDelay := 10
     
     if (queue.MaxIndex() >= 1) {
-        if (lastSkillActivation + msGlobalCooldown > lastLoopIteration) {
-            timerDelay := lastSkillActivation + msGlobalCooldown - lastLoopIteration
+        skill := lastSkillActivation + msGlobalCooldown
+        swap := lastBarSwap + msBarSwapCooldown
+        lastRelevantAction := swap > skill ? lastBarSwap : lastSkillActivation
+        if (lastRelevantAction + msGlobalCooldown > lastLoopIteration) {
+            timerDelay := lastRelevantAction + msGlobalCooldown - lastLoopIteration
         } else {
             W := queue.Remove(1)
             %W%()
@@ -145,10 +151,7 @@ Loop()
 
 Schedule(key, enabled, blockCancel, weave)
 {
-    remainingGCD := lastSkillActivation + msGlobalCooldown - A_TickCount
-    
-    ;If the GCD is not over yet, queue the new action.
-    if (queueLength > 0 && (remainingGCD > 0 || queue.MaxIndex() >= 1)) {
+    if (queueLength > 0) {
         ;Make sure we don't exceed max. queue size.
         qSize := queue.MaxIndex() ? queue.MaxIndex() : 0
         
@@ -160,6 +163,9 @@ Schedule(key, enabled, blockCancel, weave)
             W := Func("Weave").Bind(key, enabled, blockCancel, weave)
             queue.Push(W)
         }
+        
+        SetTimer, Loop, Delete
+        Loop()
     } else { ;If the GCD is over and the queue is empty, there is no reason to wait.
         Weave(key, enabled, blockCancel, weave)
     }
@@ -226,5 +232,6 @@ Return
 
 bs:
     ClearQueue()
+    lastBarSwap := A_TickCount
     Send, %barSwap%
 Return
