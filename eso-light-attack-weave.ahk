@@ -1,6 +1,4 @@
-﻿;TODO: bar swap should either cancel queue or also be queued up. Light attacks don't go off if skill is used quickly after bar swap from hail. Remove debug output.
-
-;This script adds a simple mouse click to each of the enabled keys and optionally a delayed right click.
+﻿;This script adds a simple mouse click to each of the enabled keys and optionally a delayed right click.
 
 ;========== Do not change this section unless you know what you are doing. ==========
 #SingleInstance, force
@@ -60,14 +58,15 @@ global enableWeaveU := true
 
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
 ;Keep this as low as you can for the best result.
-global msDelay := 0
+global msDelay := 100
 
 ;msGlobalCooldown + msDelay must be >= 950 ms.
-global msGlobalCooldown := 965
+global msGlobalCooldown := 865
 
 ;Both skill and bar swap cooldowns have to be over before you can do a light attack.
 ;Whichever ends later is considered.
-global msBarSwapCooldown := 700
+;msBarSwapCooldown + msDelay must be >= 600 ms.
+global msBarSwapCooldown := 500
 
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
