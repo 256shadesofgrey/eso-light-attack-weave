@@ -65,8 +65,8 @@ global msGlobalCooldown := 865
 
 ;Both skill and bar swap cooldowns have to be over before you can do a light attack.
 ;Whichever ends later is considered.
-;msBarSwapCooldown + msDelay must be >= 600 ms.
-global msBarSwapCooldown := 500
+;msBarSwapCooldown + msDelay must be >= 700 ms.
+global msBarSwapCooldown := 600
 
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
@@ -142,7 +142,7 @@ Loop()
     }
     
     ;Make sure the timerDelay value is always negative
-    timerDelay := timerDelay >= 10 ? -timerDelay : -10
+    timerDelay := timerDelay > 0 ? -timerDelay : -1
     
     ;timerDelay has to be negative to be executed once. Positive values make it periodic.
     SetTimer, Loop, %timerDelay%
