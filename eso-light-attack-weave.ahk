@@ -60,7 +60,6 @@ global enableWeaveU := false
 global msDelay := 90
 
 ;msGlobalCooldown + msDelay must be >= 950 ms.
-;global msGlobalCooldown := 865
 global msGlobalCooldown := 900
 
 ;Both skill and bar swap cooldowns have to be over before you can do a light attack.
