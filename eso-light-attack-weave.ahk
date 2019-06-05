@@ -29,8 +29,7 @@ global skillUltimate := "r"
 ;and adjusting the game configuration accordingly.
 ;For example if you switch to German layout, "`" turns into "ö" in game settings, 
 ;which is on a different key.
-;global barSwap := "``"
-global barSwap := "b"
+global barSwap := "``"
 
 ;Change this to false if you don't want skillFive to be activated when running the script.
 global enableFive := true
@@ -54,19 +53,20 @@ global enableWeave2 := true
 global enableWeave3 := true
 global enableWeave4 := true
 global enableWeave5 := true
-global enableWeaveU := true
+global enableWeaveU := false
 
 ;Increasing this vaule might help if you see that the light attacks don't go off before the skill.
 ;Keep this as low as you can for the best result.
-global msDelay := 100
+global msDelay := 90
 
 ;msGlobalCooldown + msDelay must be >= 950 ms.
-global msGlobalCooldown := 865
+;global msGlobalCooldown := 865
+global msGlobalCooldown := 900
 
 ;Both skill and bar swap cooldowns have to be over before you can do a light attack.
 ;Whichever ends later is considered.
 ;msBarSwapCooldown + msDelay must be >= 700 ms.
-global msBarSwapCooldown := 600
+global msBarSwapCooldown := 700
 
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
@@ -125,7 +125,7 @@ Loop()
     }
     
     lastLoopIteration := A_TickCount
-    timerDelay := 10
+    timerDelay := 1
     
     if (queue.MaxIndex() >= 1) {
         skill := lastSkillActivation + msGlobalCooldown
@@ -142,7 +142,7 @@ Loop()
     }
     
     ;Make sure the timerDelay value is always negative
-    timerDelay := timerDelay > 0 ? -timerDelay : -1
+    timerDelay := timerDelay >= 1 ? -timerDelay : -1
     
     ;timerDelay has to be negative to be executed once. Positive values make it periodic.
     SetTimer, Loop, %timerDelay%
@@ -150,7 +150,7 @@ Loop()
 
 Schedule(key, enabled, blockCancel, weave)
 {
-    if (queueLength > 0) {
+    if (queueLength > 0 && enabled && (blockCancel || weave)) {
         ;Make sure we don't exceed max. queue size.
         qSize := queue.MaxIndex() ? queue.MaxIndex() : 0
         
