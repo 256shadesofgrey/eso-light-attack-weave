@@ -36,6 +36,11 @@ global suspendKey := "+Tab"
 ;Default: "^Tab" (ctrl+tab)
 global toggleFiveKey := "^Tab"
 
+;0 - Pressing the suspendKey toggles the script on/off.
+;1 - If suspendKey is CapsLock, NumLock or ScrollLock,
+;    the script state will be active when the corresponding lock is active.
+global suspendKeyBehavior := 1
+
 ;Change this to false if you don't want skillFive to be activated when running the script.
 global enableFive := true
 
@@ -123,10 +128,16 @@ if (suspend) {
 ~Tab::
 Return
 
+#if % (%suspendKeyBehavior% == 1 && (RegExMatch(%suspendKey%, "*CapsLock^") || RegExMatch(%suspendKey%, "*NumLock^") || RegExMatch(%suspendKey%, "*ScrollLock^")))
+susp:
+    Suspend, % GetKeyState("CapsLock","t") ? "Off" : "On"
+Return
+#if
 susp:
     Suspend
     Loop()
 Return
+#if
 
 t5:
     enableFive := !enableFive
