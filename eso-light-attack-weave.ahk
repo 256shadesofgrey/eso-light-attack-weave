@@ -10,9 +10,8 @@ SetWorkingDir %A_ScriptDir%
 
 ;========== CONFIGURATION ==========
 
-;Comment this out (put ; in front of the line) if you want
-;the script to run right from the start, rather than load suspended.
-Suspend
+;Set this to false if you want the script to start active rather than suspended.
+global suspend = true
 
 ;Key configuration. Change this if your keybinds differ from the default ones.
 global attack := "LButton"
@@ -104,6 +103,10 @@ Hotkey, %skillUltimate%, su, On
 Hotkey, %barSwap%, bs, On
 
 #ifWinActive Elder Scrolls Online
+
+if (suspend) {
+    Suspend
+}
 
 Tab::
     Suspend
