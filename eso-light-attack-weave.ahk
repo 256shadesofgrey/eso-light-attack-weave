@@ -29,6 +29,12 @@ global skillUltimate := "r"
 ;For example if you switch to German layout, "`" turns into "ö" in game settings, 
 ;which is on a different key.
 global barSwap := "``"
+;Key to use to activate/suspend the script.
+;Default: "+Tab" (shift+tab)
+global suspendKey := "+Tab"
+;Key to use for toggling skillFive on/off.
+;Default: "^Tab" (ctrl+tab)
+global toggleFiveKey := "^Tab"
 
 ;Change this to false if you don't want skillFive to be activated when running the script.
 global enableFive := true
@@ -72,7 +78,8 @@ global msBarSwapCooldown := 700
 ;Any number greater than that will cause the inputs to be saved and used automatically 
 ;when the GCD is over. 
 ;If the queue is full, new presses will override the last performed input.
-;queueLength = 1 will result in skill behavior like in ESO by default, but with light attacks in between.
+;queueLength = 1 will result in skill behavior like in ESO by default, but would allow the script
+;to insert light attacks between the skills.
 global queueLength := 1
 
 ;The following parameters are inactive unless you enabled block cancelling.
@@ -101,6 +108,8 @@ Hotkey, %skillFour%, s4, On
 Hotkey, %skillFive%, s5, On
 Hotkey, %skillUltimate%, su, On
 Hotkey, %barSwap%, bs, On
+Hotkey, %suspendKey%, susp, On
+Hotkey, %toggleFiveKey%, t5, On
 
 #ifWinActive Elder Scrolls Online
 
@@ -108,13 +117,18 @@ if (suspend) {
     Suspend
 }
 
-Tab::
+;This fixes an apparent bug that causes the first hotkey to be triggered even when not used
+;if that keybind is set via a variable. These 2 lines basically intercept the Tab key,
+;do nothing, and then pass it through.
+~Tab::
+Return
+
+susp:
     Suspend
     Loop()
 Return
 
-;Control + tab.
-^Tab::
+t5:
     enableFive := !enableFive
 return
 
