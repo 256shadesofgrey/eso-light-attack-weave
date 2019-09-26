@@ -137,16 +137,7 @@ susp:
     Suspend
     
     ;If suspendKeyBehavior == 1, sync up the suspend action to the key state.
-    if ((suspendKeyBehavior == 1) && (RegExMatch(suspendKey, "CapsLock$") || RegExMatch(suspendKey, "NumLock$") || RegExMatch(suspendKey, "ScrollLock$"))) {
-        RegExMatch(suspendKey, "CapsLock$|NumLock$|ScrollLock$", key)
-        
-        if (GetKeyState(%key%, "t")) {
-            MsgBox, %key% = On
-        } else {
-            MsgBox, %key% = Off
-        }
-        ;Suspend, % GetKeyState(%key%, "t") ? "Off" : "On"
-        
+    if ((suspendKeyBehavior == 1) && (RegExMatch(suspendKey, "CapsLock$|NumLock$|ScrollLock$", key))) {
         if (key == "CapsLock") {
             SetCapsLockState, % GetKeyState(key, "t") ? "Off" : "On"
         } else if (key == "NumLock") {
@@ -154,6 +145,8 @@ susp:
         } else if (key == "ScrollLock") {
             SetScrollLockState, % GetKeyState(key, "t") ? "Off" : "On"
         }
+        
+        Suspend, % GetKeyState(key, "t") ? "Off" : "On"
     }
 Return
 
