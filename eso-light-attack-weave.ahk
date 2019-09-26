@@ -31,7 +31,7 @@ global skillUltimate := "r"
 global barSwap := "``"
 ;Key to use to activate/suspend the script.
 ;Default: "+Tab" (shift+tab)
-global suspendKey := "+Tab"
+global suspendKey := "CapsLock" ;"+Tab"
 ;Key to use for toggling skillFive on/off.
 ;Default: "^Tab" (ctrl+tab)
 global toggleFiveKey := "^Tab"
@@ -128,16 +128,34 @@ if (suspend) {
 ~Tab::
 Return
 
-#if % (%suspendKeyBehavior% == 1 && (RegExMatch(%suspendKey%, "*CapsLock^") || RegExMatch(%suspendKey%, "*NumLock^") || RegExMatch(%suspendKey%, "*ScrollLock^")))
+;CapsLock::
+;    SetCapsLockState, % GetKeyState("CapsLock","t") ? "Off" : "On"
+;Return
+
 susp:
-    Suspend, % GetKeyState("CapsLock","t") ? "Off" : "On"
-Return
-#if
-susp:
+    ;Suspend has to be the first action for a hotkey to remain active when script is suspended.
     Suspend
-    Loop()
+    
+    ;If suspendKeyBehavior == 1, sync up the suspend action to the key state.
+    if ((suspendKeyBehavior == 1) && (RegExMatch(suspendKey, "CapsLock$") || RegExMatch(suspendKey, "NumLock$") || RegExMatch(suspendKey, "ScrollLock$"))) {
+        RegExMatch(suspendKey, "CapsLock$|NumLock$|ScrollLock$", key)
+        
+        if (GetKeyState(%key%, "t")) {
+            MsgBox, %key% = On
+        } else {
+            MsgBox, %key% = Off
+        }
+        ;Suspend, % GetKeyState(%key%, "t") ? "Off" : "On"
+        
+        if (key == "CapsLock") {
+            SetCapsLockState, % GetKeyState(key, "t") ? "Off" : "On"
+        } else if (key == "NumLock") {
+            SetNumLockState, % GetKeyState(key, "t") ? "Off" : "On"
+        } else if (key == "ScrollLock") {
+            SetScrollLockState, % GetKeyState(key, "t") ? "Off" : "On"
+        }
+    }
 Return
-#if
 
 t5:
     enableFive := !enableFive
