@@ -136,8 +136,8 @@ susp:
     ;Suspend has to be the first action for a hotkey to remain active when script is suspended.
     Suspend
     
-    ;If suspendKeyBehavior == 1, sync up the suspend action to the key state.
     if ((suspendKeyBehavior == 1) && (RegExMatch(suspendKey, "CapsLock$|NumLock$|ScrollLock$", key))) {
+        ;If suspendKeyBehavior == 1, sync up the suspend action to the key state.
         if (key == "CapsLock") {
             SetCapsLockState, % GetKeyState(key, "t") ? "Off" : "On"
         } else if (key == "NumLock") {
@@ -147,6 +147,8 @@ susp:
         }
         
         Suspend, % GetKeyState(key, "t") ? "Off" : "On"
+    } else if (suspendKeyBehavior == 2) {
+        ;If suspendKeyBehavior == 2 and suspendKey != CapsLock, disable script when CapsLock is activated.
     }
 Return
 
