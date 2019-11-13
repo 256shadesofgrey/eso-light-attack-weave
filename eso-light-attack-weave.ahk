@@ -30,8 +30,8 @@ global skillUltimate := "r"
 ;which is on a different key.
 global barSwap := "``"
 ;Key to use to activate/suspend the script.
-;Default: "+Tab" (shift+tab)
-global suspendKey := "CapsLock" ;"+Tab"
+;Default: "Tab"
+global suspendKey := "Tab"
 ;Key to use for toggling skillFive on/off.
 ;Default: "^Tab" (ctrl+tab)
 global toggleFiveKey := "^Tab"
@@ -69,13 +69,15 @@ global enableWeaveU := false
 ;Keep this as low as you can for the best result.
 global msDelay := 90
 
-;msGlobalCooldown + msDelay must be >= 950 ms.
+;msGlobalCooldown + msDelay must be >= 950 ms. On some skills you might need more, on others less.
+;Adjust this depending on whether you want it to be more reliable on slower skills, or faster on those
+;skills that allow it but timing it manually on the slower skills.
 global msGlobalCooldown := 900
 
 ;Both skill and bar swap cooldowns have to be over before you can do a light attack.
 ;Whichever ends later is considered.
-;msBarSwapCooldown + msDelay must be >= 700 ms.
-global msBarSwapCooldown := 700
+;msBarSwapCooldown + msDelay must be >= 500 ms.
+global msBarSwapCooldown := 550
 
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
@@ -95,7 +97,6 @@ global queueLength := 1
 global msBlockDelay := 500
 ;This is used to determine how long to hold block once it's triggered.
 global msBlockHold := 50
-;Global cooldown on skills. Time for which the script will ignore new inputs. 
 
 ;========== END OF CONFIGURATION ==========
 
@@ -116,26 +117,27 @@ Hotkey, %barSwap%, bs, On
 Hotkey, %suspendKey%, susp, On
 Hotkey, %toggleFiveKey%, t5, On
 
-#ifWinActive Elder Scrolls Online
+;#ifWinActive Elder Scrolls Online
+#ifWinActive ahk_class EsoClientWndClass
 
 if (suspend) {
     Suspend
 }
 
 ;This fixes an apparent bug that causes the first hotkey to be triggered even when not used
-;if that keybind is set via a variable. These 2 lines basically intercept the Tab key,
+;if that keybind is set via a variable. These 2 lines basically intercept the Esc key,
 ;do nothing, and then pass it through.
-~Tab::
+~Esc::
 Return
-
-;CapsLock::
-;    SetCapsLockState, % GetKeyState("CapsLock","t") ? "Off" : "On"
-;Return
 
 susp:
     ;Suspend has to be the first action for a hotkey to remain active when script is suspended.
     Suspend
     
+    ;If suspendKeyBehavior == 1, and the suspend key is either of the togglable buttons,
+    ;synchronize the script activity and the button state (so when for example CapsLock is on,
+    ;the script is also on, so that if you press CapsLock when the game is inactive,
+    ;the state of the script and the CapsLock do not get desynchronized).
     if ((suspendKeyBehavior == 1) && (RegExMatch(suspendKey, "CapsLock$|NumLock$|ScrollLock$", key))) {
         ;If suspendKeyBehavior == 1, sync up the suspend action to the key state.
         if (key == "CapsLock") {
@@ -147,8 +149,6 @@ susp:
         }
         
         Suspend, % GetKeyState(key, "t") ? "Off" : "On"
-    } else if (suspendKeyBehavior == 2) {
-        ;If suspendKeyBehavior == 2 and suspendKey != CapsLock, disable script when CapsLock is activated.
     }
 Return
 
