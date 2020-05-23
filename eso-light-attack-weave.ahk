@@ -76,8 +76,8 @@ global msGlobalCooldown := 900
 
 ;Both skill and bar swap cooldowns have to be over before you can do a light attack.
 ;Whichever ends later is considered.
-;msBarSwapCooldown + msDelay must be >= 500 ms.
-global msBarSwapCooldown := 550
+;msBarSwapCooldown + msDelay must be >= 250 ms.
+global msBarSwapCooldown := 300
 
 ;This determines how many button presses will be executed later if the input comes before
 ;the global cooldown (GCD) is over. 
