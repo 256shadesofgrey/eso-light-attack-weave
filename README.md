@@ -9,10 +9,14 @@ This is a macro for the game Elder Scrolls Online. "Light attack weaving" is the
 5. \[Optional\] Press Ctrl+Tab to toggle light attack weaving when pressing 5. This has to be done after the macro is already active (i.e. you enabled it in accordance to step 4).
 
 # FAQ #
-## Technical questions
+## General questions
+Q: Will there be an update because of a change in this patch?
+A: If an update is necessary, it will generally happen within a few days of a new patch hitting live servers. If this is not the case, no update is necessary and the thing you're quoting from the patch notes is not affecting the macro. If you think I missed something, create a new ticket/issue explaining the problem, that way I can address the question once for everyone instead of writing the same thing in 10 different emails.
+
 Q: Will this macro get me banned?  
 A: I don't know, I don't work for ZOS. Technically macros are against TOS, so use it at your own risk.
 
+## Technical questions
 Q: Does this macro work in full screen mode?  
 A: Yes.
 
@@ -47,4 +51,4 @@ Q: What's wrong with animation cancelling?
 A: There is nothing inherently wrong with it. In my opinion some forms of animation cancelling are necessary to make the game feel responsive, but no form of animation cancelling should result in just flat out more damage. Light attack weaving is the biggest offender, since it's currently easily making up 25% of the damage on certain builds.
 
 Q: What forms of animation cancelling are in your opinion necessary?  
-A: For example dodge rolling. If a skill with a long animation locked you in place and you couldn't dodge roll, it would often lead to the death of your character. When you dodge roll, you cancel the skill animation, but that doesn't allow you to perform any additional action that would increase your damage, because while you're rolling, you can't do any attacks.
+A: For example dodge rolling. If a skill with a long animation locked you in place and you couldn't dodge roll, it would often lead to the death of your character. When you dodge roll, you cancel the skill animation, but that doesn't allow you to perform any additional action that would increase your damage, because while you're rolling, you can't perform any attacks.
