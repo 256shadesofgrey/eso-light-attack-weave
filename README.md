@@ -10,7 +10,7 @@ This is a macro for the game Elder Scrolls Online. "Light attack weaving" is the
 
 # FAQ #
 ## General questions
-Q: Will there be an update because of a change in this patch?
+Q: Will there be an update because of a change in this patch?  
 A: If an update is necessary, it will generally happen within a few days of a new patch hitting live servers. If this is not the case, no update is necessary and the thing you're quoting from the patch notes is not affecting the macro. If you think I missed something, create a new ticket/issue explaining the problem, that way I can address the question once for everyone instead of writing the same thing in 10 different emails.
 
 Q: Will this macro get me banned?  
