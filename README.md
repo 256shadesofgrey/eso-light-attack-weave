@@ -17,16 +17,23 @@ Q: Will this macro get me banned?
 A: I don't know, I don't work for ZOS. Technically macros are against TOS, so use it at your own risk.
 
 ## Technical questions
+Q: The macro doesn't do anything, what can I do?  
+A: Here are some of the frequent problems I come across when helping people troubleshoot:
+   1. Make sure the macro is actually active. Once the macro is running, it will show a green icon in the tray with either an S or an H. If you see an S, that means the macro is suspended (all keybinds except for the suspend toggle hotkey are disabled). To make it show an H, either press the suspend hotkey (Tab by default) while the game window is active, or right click on the icon and remove the checkmark next to the "Suspend Hotkeys" option.
+   2. The default keybinds are configured to work with an English QWERTY keyboard layout. If you have for example a German QWERTZ keyboard, the bar swap button will be by default "ö" and not "\`", causing the script to not delete the queue on bar swap, causing problems if you're swapping before the queue is emptied. And on a French AZERTY keyboard it's not even numbers on the skill keys. In both cases either adjust the keybinds in the configuration of the script, or switch the keyboard layout to English in windows.
+   3. Make sure you started the macro after the game was launched. If you forgot that you had the macro running already, or if your game crashed and had to be restarted, you can also right click in the tray on the H/S icon and select "Reload This Script" after you start up the game again.
+
+Q: I get an error trying to run the macro, what can I do?  
+A: You probably did not download it correctly. See #4 for details.
+
+Q: The macro presses random keys when using mouse XButton1/2, can you fix it?  
+A: There seems to be a bug with AutoHotkey and/or ESO resulting in some strange behavior, so no, I cannot fix it. But there is a workaround. Look at #9 for details.
+
 Q: Does this macro work in full screen mode?  
 A: Yes.
 
 Q: I'm using custom keybinds in the game, can the macro work with them?  
 A: Yes, take a look at the "CONFIGURATION" section inside of the .ahk file. There you can change the key configuration to whatever you want.
-
-Q: The macro doesn't work, what can I do?  
-A: Here are some of the frequent problems I come across when helping people troubleshoot:
-   1. Make sure the macro is actually active. Once the macro is running, it will show a green icon in the tray with either an S or an H. If you see an S, that means the macro is suspended (all keybinds except for the suspend toggle hotkey are disabled). To make it show an H, either press the suspend hotkey (Tab by default) while the game window is active, or right click on the icon and remove the checkmark next to the "Suspend Hotkeys" option.
-   2. The default keybinds are configured to work with an English QWERTY keyboard layout. If you have for example a German QWERTZ keyboard, the bar swap button will be by default "ö" and not "\`", causing the script to not delete the queue on bar swap, causing problems if you're swapping before the queue is emptied. And on a French AZERTY keyboard, it's not even numbers on the skill keys. In both cases either adjust the keybinds in the configuration of the script, or switch the keyboard layout to English in windows.
 
 Q: I play in full screen mode, and I do not see the tray, but I would like to be able to see if the macro is active. How can I do that?  
 A: You can change the suspendKey parameter to "CapsLock", "NumLock" or "ScrollLock", and make sure that suspendKeyBehavior is set to 1. That way the state of the macro will synch up with the state of the corresponding keys, and you can use the corresponding LEDs on your keyboard to see if the macro is active.
