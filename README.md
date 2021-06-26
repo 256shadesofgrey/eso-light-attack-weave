@@ -29,6 +29,9 @@ A: You probably did not download it correctly. See [#4](https://github.com/256sh
 Q: The macro presses random keys when using mouse XButton1/2, can you fix it?  
 A: There seems to be a bug with AutoHotkey and/or ESO resulting in some strange behavior, so no, I cannot fix it. But there is a workaround. Look at [#9](https://github.com/256shadesofgrey/eso-light-attack-weave/issues/9) for details.
 
+Q: Can I use this macro with a controller?  
+A: I have not tested it, but theoretically yes. You would need to adjust the keybinds accordingly. See [#8](https://github.com/256shadesofgrey/eso-light-attack-weave/issues/8) for more info.
+
 Q: Does this macro work in full screen mode?  
 A: Yes.
 
