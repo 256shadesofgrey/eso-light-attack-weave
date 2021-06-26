@@ -24,10 +24,10 @@ A: Here are some of the frequent problems I come across when helping people trou
    3. Make sure you started the macro after the game was launched. If you forgot that you had the macro running already, or if your game crashed and had to be restarted, you can also right click in the tray on the H/S icon and select "Reload This Script" after you start up the game again.
 
 Q: I get an error trying to run the macro, what can I do?  
-A: You probably did not download it correctly. See #4 for details.
+A: You probably did not download it correctly. See [#4](https://github.com/256shadesofgrey/eso-light-attack-weave/issues/4) for details.
 
 Q: The macro presses random keys when using mouse XButton1/2, can you fix it?  
-A: There seems to be a bug with AutoHotkey and/or ESO resulting in some strange behavior, so no, I cannot fix it. But there is a workaround. Look at #9 for details.
+A: There seems to be a bug with AutoHotkey and/or ESO resulting in some strange behavior, so no, I cannot fix it. But there is a workaround. Look at [#9](https://github.com/256shadesofgrey/eso-light-attack-weave/issues/9) for details.
 
 Q: Does this macro work in full screen mode?  
 A: Yes.
