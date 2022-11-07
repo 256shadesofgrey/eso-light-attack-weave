@@ -3,7 +3,7 @@ This is a macro for the game Elder Scrolls Online. "Light attack weaving" is the
 
 # Usage #
 1. Install the AutoHotkey interpreter ( https://autohotkey.com/ ).
-2. Run the game (since Update 24 this must be done before running the macro).
+2. Run the game.
 3. Run the macro.
 4. While the game window is active, enable/disable it by pressing tab.
 5. \[Optional\] Press Ctrl+Tab to toggle light attack weaving when pressing 5. This has to be done after the macro is already active (i.e. you enabled it in accordance to step 4).
@@ -21,7 +21,7 @@ Q: The macro doesn't do anything, what can I do?
 A: Here are some of the frequent problems I come across when helping people troubleshoot:
    1. Make sure the macro is actually active. Once the macro is running, it will show a green icon in the tray with either an S or an H. If you see an S, that means the macro is suspended (all keybinds except for the suspend toggle hotkey are disabled). To make it show an H, either press the suspend hotkey (Tab by default) while the game window is active, or right click on the icon and remove the checkmark next to the "Suspend Hotkeys" option.
    2. The default keybinds are configured to work with an English QWERTY keyboard layout. If you have for example a German QWERTZ keyboard, the bar swap button will be by default "ö" and not "\`", causing the script to not delete the queue on bar swap, causing problems if you're swapping before the queue is emptied. And on a French AZERTY keyboard it's not even numbers on the skill keys. In both cases either adjust the keybinds in the configuration of the script, or switch the keyboard layout to English in windows.
-   3. Make sure you started the macro after the game was launched. If you forgot that you had the macro running already, or if your game crashed and had to be restarted, you can also right click in the tray on the H/S icon and select "Reload This Script" after you start up the game again.
+   3. Try starting the macro after the game was launched. If you have the macro running already, or if your game crashed and had to be restarted, you can also right click in the tray on the H/S icon and select "Reload This Script" after you start up the game again.
 
 Q: I get an error trying to run the macro, what can I do?  
 A: You probably did not download it correctly. See [#4](https://github.com/256shadesofgrey/eso-light-attack-weave/issues/4) for details.
