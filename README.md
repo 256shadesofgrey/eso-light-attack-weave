@@ -1,6 +1,9 @@
 # eso-light-attack-weave
 This is a macro for the game Elder Scrolls Online. "Light attack weaving" is the term the ESO community uses to describe the use of a simple weapon attack right before using a spell, resulting in the animation of the weapon attack being cancelled, allowing you to do more attacks in the same amount of time.
 
+# Linux
+This script only works on Windows. If you are looking for something similar for Linux, check out the [python implementation](https://github.com/256shadesofgrey/eso-light-attack-weave-python).
+
 # Usage #
 1. Install the AutoHotkey interpreter ( https://autohotkey.com/ ).
 2. Run the game.
