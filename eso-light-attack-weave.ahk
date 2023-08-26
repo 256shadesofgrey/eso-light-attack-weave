@@ -29,6 +29,11 @@ global skillUltimate := "r"
 ;For example if you switch to German layout, "`" turns into "ö" in game settings, 
 ;which is on a different key.
 global barSwap := "``"
+;This enables additional keys that trigger the bar swap function.
+;Enable this if you use the swap to weapon set 1/2 functions instead of a regular bar swap.
+global swapToSpecificWeaponSet := false
+global weaponSet1 := "F11"
+global weaponSet2 := "F12"
 ;Key to use to activate/suspend the script.
 ;Default: "Tab"
 global suspendKey := "Tab"
@@ -116,6 +121,11 @@ Hotkey, %skillUltimate%, su, On
 Hotkey, %barSwap%, bs, On
 Hotkey, %suspendKey%, susp, On
 Hotkey, %toggleFiveKey%, t5, On
+
+if (swapToSpecificWeaponSet) {
+    Hotkey, %weaponSet1%, ws1, On
+    Hotkey, %weaponSet2%, ws2, On
+}
 
 ;#ifWinActive Elder Scrolls Online
 #ifWinActive ahk_class EsoClientWndClass
@@ -245,6 +255,14 @@ Weave(key, enabled, blockCancel, weave)
     }
 }
 
+BarSwap(key)
+{
+    OutputDebug, Swap using: %key%
+    ClearQueue()
+    lastBarSwap := A_TickCount
+    Send, {%key%}
+}
+
 s1:
     Schedule(skillOne, true, enableBlockCancel1, enableWeave1)
 Return
@@ -270,7 +288,13 @@ su:
 Return
 
 bs:
-    ClearQueue()
-    lastBarSwap := A_TickCount
-    Send, %barSwap%
+    BarSwap(barSwap)
+Return
+
+ws1:
+    BarSwap(weaponSet1)
+Return
+
+ws2:
+    BarSwap(weaponSet2)
 Return
