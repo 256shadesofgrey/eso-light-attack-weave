@@ -3,6 +3,7 @@
 ;========== Do not change this section unless you know what you are doing. ==========
 #SingleInstance, force
 #NoEnv
+#UseHook
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input
 SetWorkingDir %A_ScriptDir%
